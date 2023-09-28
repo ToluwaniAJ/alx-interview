@@ -1,21 +1,25 @@
 #!/usr/bin/python3
-"""This file attempt to solve the island perimeter question"""
+"""Island perimeter computing module.
+"""
 
 
 def island_perimeter(grid):
-    """This finds the perimeter of an island"""
+    """Computes the perimeter of an island with no lakes.
+    """
     perimeter = 0
-    x = len(grid)
-    for i in range(x):
-        m = len(grid[i])
-        for j in range(m):
-            if grid[i][j] == 1:
-                if (i - 1 >= 0 and grid[i - 1][j] == 0) or i == 0:
-                    perimeter += 1
-                if (i + 1 < x and grid[i + 1][j] == 0) or i == (x - 1):
-                    perimeter += 1
-                if (j - 1 >= 0 and grid[i][j - 1] == 0) or j == 0:
-                    perimeter += 1
-                if (j + 1 < m and grid[i][j + 1] == 0) or j == (m - 1):
-                    perimeter += 1
+    if type(grid) != list:
+        return 0
+    n = len(grid)
+    for i, row in enumerate(grid):
+        m = len(row)
+        for j, cell in enumerate(row):
+            if cell == 0:
+                continue
+            edges = (
+                i == 0 or (len(grid[i - 1]) > j and grid[i - 1][j] == 0),
+                j == m - 1 or (m > j + 1 and row[j + 1] == 0),
+                i == n - 1 or (len(grid[i + 1]) > j and grid[i + 1][j] == 0),
+                j == 0 or row[j - 1] == 0,
+            )
+            perimeter += sum(edges)
     return perimeter
